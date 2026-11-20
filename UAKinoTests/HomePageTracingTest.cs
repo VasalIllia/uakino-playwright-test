@@ -30,7 +30,23 @@ public class HomePageTracingTest : PageTest
             )
         });
     }*/
-    
+    public override BrowserNewContextOptions ContextOptions()
+    {
+        var options = new BrowserNewContextOptions();
+        var proxyServer = Environment.GetEnvironmentVariable("PROXY_SERVER");
+        
+        if (!string.IsNullOrEmpty(proxyServer))
+        {
+            options.Proxy = new Proxy
+            {
+                Server = proxyServer,
+                Username = Environment.GetEnvironmentVariable("PROXY_USERNAME"),
+                Password = Environment.GetEnvironmentVariable("PROXY_PASSWORD")
+            };
+        }
+
+        return options;
+    }
     [Test]
     public async Task VisibleFilmBanner()
     {
